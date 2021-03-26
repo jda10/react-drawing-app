@@ -6,4 +6,4 @@ npm ci to install dependencies <br />
 npm run start
 
 # Demo
-![Demo](https://github.com/jda10/react-drawing-app/blob/master/demo.gif)
+![Demo](https://github.com/jda10/react-drawing-app/blob/master/demoV2.gif)
