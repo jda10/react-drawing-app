@@ -22,16 +22,19 @@ function App() {
   const [drawing, setDrawing] = useState(false);
   const [elementType, setElementType] = useState("line");
   const [discardedElements] = useState([]);
+  var geometric = true;
   useLayoutEffect(() => {
     redraw();
   })
 
   const handleMouseDown = (event) => {
-    setDrawing(true);
+    if(geometric){
+      setDrawing(true);
     const {clientX, clientY} = event;
 
     const element = createElement(clientX, clientY,clientX, clientY, elementType);
     setElements(prevState => [...prevState, element]);
+    }
   };
   const redraw = () => {
     const canvas = document.getElementById('canvas');
@@ -63,6 +66,7 @@ function App() {
     setDrawing(false);
   };
 
+  
   const undo = () => {
     //Don't pop from array if there are no more elements to pop
     if(elements.length > 0){
@@ -78,6 +82,12 @@ function App() {
       setElements(elements);
       redraw();
     }
+  }
+
+  const clear = () => {
+    elements.splice(0,elements.length) 
+    setElements(elements);
+    redraw();
   }
   return (
     <div>
@@ -110,6 +120,16 @@ function App() {
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-clockwise" viewBox="0 0 16 16">
       <path fillRule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
       <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+    </svg>
+    </Button>
+    <Button style={{margin: "5px"}} data-toggle="tooltip" title="Pen" onClick={()=>alert("Currently in progress")}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen-fill" viewBox="0 0 16 16">
+      <path d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+    </svg>
+    </Button>
+    <Button style={{margin: "5px"}} data-toggle="tooltip" title="Clear" onClick={()=>{clear()}}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
     </svg>
     </Button>
     </div>
