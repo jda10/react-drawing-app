@@ -18,13 +18,18 @@ function createElement(x1,y1,x2,y2, type){
 function App() {
 
 
-  const[elements, setElements] = useState([]);
+  var [elements, setElements] = useState([]);
   const [drawing, setDrawing] = useState(false);
   const [elementType, setElementType] = useState("line");
   const [discardedElements] = useState([]);
-  var geometric = true;
+  var [geometric] = useState(true);
+  
   useLayoutEffect(() => {
+    
     redraw();
+    window.onbeforeunload = function() {
+      return true;
+    };
   })
 
   const handleMouseDown = (event) => {
@@ -103,6 +108,17 @@ function App() {
     setElements(elements);
     redraw();
   }
+
+  /*
+  const save = () => {
+    localStorage.setItem("elements", elements);
+  }
+  
+
+  const relodLastSaved = () => {
+
+  }
+*/
   return (
     <div>
     <div style={{position:"fixed", display:"flex", left: "25%", transform : "translate(-25%, 0)", backgroundColor: "lightgray"}} className="toolbar">
@@ -147,7 +163,7 @@ function App() {
     </svg>
     </Button>
     </div>
-    <canvas 
+    <canvas style={{cursor:'pointer'}}
     id="canvas" 
     width={window.innerWidth} 
     height={window.innerHeight}
