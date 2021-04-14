@@ -1,19 +1,9 @@
 import { useLayoutEffect, useState } from "react";
 import rough from 'roughjs/bundled/rough.esm';
 import Button from 'react-bootstrap/Button'
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 const generator = rough.generator();
 
-function createElement(x1,y1,x2,y2, type){
-
-  let roughElement = null;
-  if(type === "line"){roughElement= generator.line(x1,y1, x2, y2)}
-  else if(type === "rectangle"){roughElement = generator.rectangle(x1,y1, x2-x1, y2-y1)}
-  else{roughElement = generator.ellipse(x1,y1, x2-x1, y2-y1)}
-
-  return{x1,y1,x2,y2, roughElement};
-}
 
 function App() {
 
@@ -22,7 +12,7 @@ function App() {
   const [drawing, setDrawing] = useState(false);
   const [elementType, setElementType] = useState("line");
   const [discardedElements] = useState([]);
-  var [geometric] = useState(true);
+  var [geometric, setGeometric] = useState(true);
   
   useLayoutEffect(() => {
     
@@ -33,14 +23,24 @@ function App() {
   })
 
   const handleMouseDown = (event) => {
+    if(elementType === "free"){setGeometric(false)};
     if(geometric){
       setDrawing(true);
     const {clientX, clientY} = event;
-
     const element = createElement(clientX, clientY,clientX, clientY, elementType);
     setElements(prevState => [...prevState, element]);
     }
   };
+
+  function createElement(x1,y1,x2,y2, type){
+
+    let roughElement = null;
+    if(type === "line"){roughElement= generator.line(x1,y1, x2, y2)}
+    else if(type === "rectangle"){roughElement = generator.rectangle(x1,y1, x2-x1, y2-y1)}
+    else{roughElement = generator.ellipse(x1,y1, x2-x1, y2-y1)}
+  
+    return{x1,y1,x2,y2, roughElement};
+  }
   const redraw = () => {
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
@@ -152,7 +152,7 @@ function App() {
       <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
     </svg>
     </Button>
-    <Button style={{margin: "5px"}} data-toggle="tooltip" title="Pen" onClick={()=>alert("Currently in progress")} disabled>
+    <Button style={{margin: "5px"}} data-toggle="tooltip" title="Pen" onClick={() => setElementType("free")} hidden>
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-pen-fill" viewBox="0 0 16 16">
       <path d="M13.498.795l.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
     </svg>
