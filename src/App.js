@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import rough from 'roughjs/bundled/rough.esm';
 import Button from 'react-bootstrap/Button'
+import Toast from 'react-bootstrap/Toast'
 import 'bootstrap/dist/css/bootstrap.min.css';
 const generator = rough.generator();
 
@@ -120,7 +121,7 @@ function App() {
   }
 */
   return (
-    <div>
+    <div id="area">
     <div style={{position:"fixed", display:"flex", left: "25%", transform : "translate(-25%, 0)", backgroundColor: "lightgray"}} className="toolbar">
     <Button style={{margin: "5px"}}
     onClick={() => setElementType("rectangle")}
@@ -170,6 +171,9 @@ function App() {
     onMouseDown={handleMouseDown}
     onMouseMove={handleMouseMove}
     onMouseUp={handleMouseUp}
+    onTouchStart={handleMouseDown}
+    onTouchMove={handleMouseMove}
+    onTouchEnd={handleMouseUp}
     ></canvas>
     </div>
   );
